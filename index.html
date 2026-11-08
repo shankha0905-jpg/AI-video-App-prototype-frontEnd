@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family:'Courier New', Courier, monospace;
+        }
+
+        body{
+            background-color: whitesmoke;
+        }
+
+        header{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 1px;
+            background-color: royalblue;
+            position: fixed;
+            width: 100%;
+        }
+
+        #login,#signup{
+            padding: 10px;
+            margin-left: 5px;
+            border-radius: 10px;
+            border: none;
+            background-color: white;
+        }
+
+        #login,#signup:hover{
+            background-color: whitesmoke;
+            transition: 8ms;
+            cursor: pointer;
+        }
+
+        .logo{
+            width: 60px;
+            height: 60px;
+            margin-top: 10px;
+            padding: 10px;
+            margin-left: 10px;
+            border-radius: 40px;
+        }
+
+        section{
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .Area{
+            width: 250px;
+            height: 100vh;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="LogoBox">
+            <img class="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQquZVfbCsiUAAY6Anrv8BuxQ1rHWNxp_mZ-AOhVZwwhw&s=10" alt="">
+        </div>
+        <div>
+            <button id="login">Login</button>
+            <button id="signup">SignUp</button>
+        </div>
+    </header>
+
+    <section>
+        <div class="Area">
+            <button style="width: 200px;">Create new project</button>
+            <button>Project Histroy</button>
+        </div>
+    </section>
+
+    <script>
+        
+    </script>
+</body>
+</html>
