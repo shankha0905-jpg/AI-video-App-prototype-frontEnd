@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Generator prototype 1</title>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f3f5fa;
+            overflow: hidden;
+        }
+
+        /* NAVBAR */
+        header {
+            height: 70px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+
+            background: rgba(65, 105, 225, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #login, #signup {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        #login:hover, #signup:hover {
+            background: #e8edff;
+            transform: translateY(-2px);
+        }
+
+        .ligthmood {
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        /* MAIN LAYOUT */
+        .container {
+            display: flex;
+            height: 100vh;
+            padding-top: 70px;
+        }
+
+        /* SIDEBAR */
+        .Area {
+            width: 250px;
+            min-width: 250px;
+            height: calc(100vh - 70px);
+
+            background: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            padding: 20px 10px;
+            overflow-y: auto;
+
+            position: fixed;
+            top: 70px;
+            left: 0;
+
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .newProject, .ProjectHistroy {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 12px;
+
+            border: none;
+            border-radius: 10px;
+
+            font-size: 14px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .newProject {
+            background: royalblue;
+            color: white;
+            font-weight: 600;
+        }
+
+        .newProject:hover {
+            background: #244dcc;
+        }
+
+        .ProjectHistroy {
+            background: #f3f5fa;
+            color: #333;
+        }
+
+        .ProjectHistroy:hover {
+            background: #e6eaff;
+        }
+
+        /* PROJECT DETAILS */
+        .ProjectDetails {
+            width: 100%;
+            flex: 1;
+            min-height: 200px;
+
+            background: #f8f9fc;
+            border-radius: 10px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .ProjectDetails h4 {
+            color: #444;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .details {
+            width: 100%;
+        }
+
+        /* MAIN WORKSPACE */
+        .main-workspace {
+            flex: 1;
+            min-width: 0;
+            height: calc(100vh - 70px);
+
+            margin-left: 250px;
+            padding: 20px;
+
+            display: flex;
+        }
+
+        .input-video {
+            width: 100%;
+            height: 100%;
+
+            background: white;
+            border-radius: 15px;
+
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* VIDEO AREA */
+        .video {
+            flex: 1;
+            min-height: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+        }
+
+        .video h1 {
+            color: #a0a5b1;
+            font-size: 25px;
+            text-align: center;
+        }
+
+        /* INPUT AREA */
+        .input {
+            width: 100%;
+            padding: 20px;
+
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 12px;
+
+            background: white;
+        }
+
+        textarea {
+            resize: none;
+
+            width: 80%;
+            max-width: 800px;
+            height: 100px;
+
+            padding: 15px;
+
+            border: 1px solid #dce1ed;
+            border-radius: 12px;
+
+            background: #f8f9fc;
+            outline: none;
+
+            font-size: 15px;
+            line-height: 1.5;
+
+            transition: 0.2s;
+        }
+
+        textarea:focus {
+            border-color: royalblue;
+            box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.12);
+        }
+
+        .submit {
+            padding: 15px 25px;
+            height: 48px;
+
+            background: linear-gradient(135deg, royalblue, #6495ed);
+            color: white;
+
+            border: none;
+            border-radius: 10px;
+
+            font-weight: bold;
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(65, 105, 225, 0.3);
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 700px) {
+
+            header {
+                padding: 0 12px;
+            }
+
+            .Area {
+                width: 180px;
+                min-width: 180px;
+            }
+
+            .main-workspace {
+                margin-left: 180px;
+                padding: 10px;
+            }
+
+            .video h1 {
+                font-size: 18px;
+            }
+
+            .input {
+                padding: 10px;
+                gap: 7px;
+            }
+
+            textarea {
+                width: 100%;
+                height: 85px;
+                font-size: 13px;
+            }
+
+            .submit {
+                padding: 12px 15px;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .Area {
+                width: 140px;
+                min-width: 140px;
+            }
+
+            .main-workspace {
+                margin-left: 140px;
+            }
+
+            .ProjectDetails {
+                padding: 8px;
+            }
+
+            .newProject, .ProjectHistroy {
+                font-size: 11px;
+                padding: 10px 5px;
+            }
+
+            #login, #signup {
+                padding: 8px;
+                font-size: 11px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+
+        <div class="LogoBox">
+            <img class="logo"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQquZVfbCsiUAAY6Anrv8BuxQ1rHWNxp_mZ-AOhVZwwhw&s=10"
+                alt="Logo">
+        </div>
+
+        <div class="nav-buttons">
+            <button id="login">Login</button>
+            <button id="signup">SignUp</button>
+            <button class="ligthmood">🌙</button>
+        </div>
+
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+
+        <!-- SIDEBAR -->
+        <aside class="Area">
+
+            <button class="newProject">
+                + Create new project
+            </button>
+
+            <button class="ProjectHistroy">
+                Project History ⬇
+            </button>
+
+            <div class="ProjectDetails">
+
+                <h4>Project Details</h4>
+
+                <div class="details">
+                    <!-- Project details -->
+                </div>
+
+            </div>
+
+        </aside>
+
+        <!-- MAIN WORKSPACE -->
+        <main class="main-workspace">
+
+            <div class="input-video">
+
+                <!-- VIDEO DISPLAY -->
+                <div class="video">
+
+                    <h1>No Videos Created Yet.</h1>
+
+                </div>
+
+                <!-- PROMPT INPUT -->
+                <div class="input">
+
+                    <textarea
+                        placeholder="Describe the video you want to create..."
+                    ></textarea>
+
+                    <button class="submit">
+                        GO →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
