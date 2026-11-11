@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,7 +53,8 @@
             gap: 12px;
         }
 
-        #login, #signup {
+        #login,
+        #signup {
             padding: 10px 18px;
             border: none;
             border-radius: 8px;
@@ -64,7 +64,8 @@
             transition: 0.2s;
         }
 
-        #login:hover, #signup:hover {
+        #login:hover,
+        #signup:hover {
             background: #e8edff;
             transform: translateY(-2px);
         }
@@ -105,7 +106,8 @@
             border-right: 1px solid #e5e7eb;
         }
 
-        .newProject, .ProjectHistroy {
+        .newProject,
+        .ProjectHistroy {
             width: 100%;
             padding: 13px;
             margin-bottom: 12px;
@@ -163,6 +165,7 @@
 
         .details {
             width: 100%;
+            overflow-y: scroll;
         }
 
         /* MAIN WORKSPACE */
@@ -186,6 +189,19 @@
 
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .input-video-dark {
+            width: 100%;
+            height: 100%;
+            background-color: gray;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            border-top: 1px solid white;
+            border-left: 1px solid white;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -215,11 +231,33 @@
             padding: 20px;
 
             display: flex;
-            align-items: flex-end;
+            align-items: center;
+            flex-direction: column;
             justify-content: center;
             gap: 12px;
 
             background: white;
+        }
+
+        .input input {
+            margin-bottom: 10px;
+        }
+
+        .input-dark {
+            width: 100%;
+            padding: 20px;
+
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+
+            background-color: transparent;
+            border-radius: 15px;
+            backdrop-filter: blur(20px);
+            border-top: 1px solid white;
+            border-left: 1px solid white;
         }
 
         textarea {
@@ -267,6 +305,14 @@
         .submit:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(65, 105, 225, 0.3);
+        }
+
+        .projectname {
+            width: 800px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: whitesmoke;
+            border: none;
         }
 
         /* RESPONSIVE DESIGN */
@@ -320,17 +366,59 @@
                 padding: 8px;
             }
 
-            .newProject, .ProjectHistroy {
+            .newProject,
+            .ProjectHistroy {
                 font-size: 11px;
                 padding: 10px 5px;
             }
 
-            #login, #signup {
+            #login,
+            #signup {
                 padding: 8px;
                 font-size: 11px;
             }
         }
 
+        /* DarkMood */
+        .DarkMood {
+            background-color: black;
+        }
+
+        .Start {
+            margin-left: 650px;
+        }
+
+        #lang {
+            padding: 10px;
+            border-radius: 10px;
+            /* background-color: transparent; */
+            border: none;
+        }
+
+        .projectDetailsinnerBox {
+            width: 200px;
+            min-height: 30px;
+            background-color: whitesmoke;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            padding: 10px;
+        }
+
+        .delbtnpro {
+            border: none;
+            text-decoration: dashed;
+            background-color: transparent;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        .projectName{
+            margin-top: 30px;
+            margin-left: 10px;
+            /* font-size: 12px; */
+            font-family:'Courier New', Courier, monospace;
+        }
     </style>
 </head>
 
@@ -348,6 +436,10 @@
         <div class="nav-buttons">
             <button id="login">Login</button>
             <button id="signup">SignUp</button>
+            <select name="" id="lang">
+                <option value="English">English(Default)</option>
+                <option value="Hindi">Hindi</option>
+            </select>
             <button class="ligthmood">🌙</button>
         </div>
 
@@ -357,7 +449,7 @@
     <div class="container">
 
         <!-- SIDEBAR -->
-        <aside class="Area">
+        <aside class="Area" id="sideBAr">
 
             <button class="newProject">
                 + Create new project
@@ -367,7 +459,7 @@
                 Project History ⬇
             </button>
 
-            <div class="ProjectDetails">
+            <div class="ProjectDetails" style="display: none;">
 
                 <h4>Project Details</h4>
 
@@ -385,30 +477,124 @@
             <div class="input-video">
 
                 <!-- VIDEO DISPLAY -->
+
+                <h2 class="projectName"></h2>
+
                 <div class="video">
 
-                    <h1>No Videos Created Yet.</h1>
+                    <h1 class="text">No Videos Created Yet.</h1>
 
                 </div>
 
                 <!-- PROMPT INPUT -->
-                <div class="input">
+                <div style="border: none;" class="input">
+                    <form action="" id="formInput">
+                        <input type="text" placeholder="Project Name:" class="projectname">
 
-                    <textarea
-                        placeholder="Describe the video you want to create..."
-                    ></textarea>
-
-                    <button class="submit">
-                        GO →
-                    </button>
-
+                        <textarea placeholder="Describe the video you want to create..."></textarea>
+                    </form>
                 </div>
-
             </div>
-
         </main>
 
     </div>
 
+    <script>
+        let ligthmoodbtn = document.querySelector(".ligthmood");
+        let body = document.querySelector("body");
+        let input_video = document.querySelector(".input-video");
+        let input = document.querySelector(".input");
+        let sideBAr = document.getElementById("sideBAr");
+        let newProjectbtn = document.querySelector(".newProject");
+        let ProjectDetails = document.querySelector(".ProjectDetails");
+        let text = document.querySelector(".text");
+        let ProjectHistroy = document.querySelector(".ProjectHistroy");
+        let ProjectDetailsBox = document.querySelector(".ProjectDetails");
+        let formInput = document.getElementById("formInput");
+        let projectname = document.querySelector(".projectname");
+        let textarea = document.querySelector("textarea");
+        let details = document.querySelector(".details");
+
+        let isdarkorligth = true;
+        let isHide = true;
+        let count = 0;
+
+        //Dark Themes.
+        ligthmoodbtn.addEventListener("click", () => {
+            //change symbol of button;
+            if (isdarkorligth == true) {
+                ligthmoodbtn.innerHTML = "☀️"
+                body.classList.add("DarkMood");
+                input.classList.add("input-dark");
+                input_video.classList.add("input-video-dark");
+                sideBAr.style.backgroundColor = "gray";
+                newProjectbtn.style.backgroundColor = "black";
+                ProjectDetails.style.backgroundColor = "lightgray";
+                text.style.color = "white"
+                isdarkorligth = false;
+            } else {
+                ligthmoodbtn.innerHTML = "🌙";
+                body.classList.remove("DarkMood");
+                input.classList.remove("input-dark");
+                input_video.classList.remove("input-video-dark");
+                sideBAr.style.backgroundColor = "white";
+                newProjectbtn.style.backgroundColor = "royalblue";
+                ProjectDetails.style.backgroundColor = "whitesmoke";
+                text.style.color = "#a0a5b1"
+                isdarkorligth = true
+            }
+        });
+
+        //hide project bar;
+        ProjectHistroy.addEventListener("click", () => {
+            if (isHide) {
+                ProjectDetailsBox.style.display = "flex";
+                ProjectHistroy.innerHTML = "Project History ⬆"
+                isHide = false;
+            } else {
+                ProjectDetailsBox.style.display = "none";
+                ProjectHistroy.innerHTML = "Project History ⬇"
+                isHide = true;
+            }
+        });
+
+        formInput.addEventListener("keydown", (Event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                if (projectname.value === "" || textarea.value === "") {
+                    alert("Project name and prompt is needed.")
+                } else {
+                    const projectDetailsinnerBox = document.createElement("div");
+                    projectDetailsinnerBox.classList.add("projectDetailsinnerBox");
+                    projectDetailsinnerBox.style.display = "flex";
+                    projectDetailsinnerBox.style.justifyContent = "space-between";
+                    projectDetailsinnerBox.style.alignItems = "center";
+                    details.appendChild(projectDetailsinnerBox);
+
+                    const proName = document.createElement("p");
+                    count += 1;
+                    proName.innerHTML = `${count} ${projectname.value}`;
+                    proName.style.fontSize="11px";
+                    projectDetailsinnerBox.appendChild(proName);
+
+                    const delbtn = document.createElement("button");
+                    delbtn.innerHTML = "Delete"
+                    delbtn.classList.add("delbtnpro");
+                    projectDetailsinnerBox.appendChild(delbtn);
+
+                    // Attach event listener to the delete button
+                    delbtn.addEventListener("click", () => {
+                        // Find the closest parent div with a specific class or selector
+                        const targetDiv = delbtn.closest(".projectDetailsinnerBox");
+
+                        if (targetDiv) {
+                            targetDiv.remove(); // Removes only that specific div
+                        }
+                    });
+                }
+            }
+        })
+    </script>
 </body>
+
 </html>
